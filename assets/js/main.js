@@ -38,14 +38,21 @@ function dejarComentario(id_miembro){
     })[0];
 
     var nuevo_comentario = document.getElementById("nuevo_comentario_" + id_miembro).value;
-    comentario = new Comentario(id_miembro, nuevo_comentario, "like");
+    document.getElementById("nuevo_comentario_" + id_miembro).value = "";
+    comentario = new Comentario(id_miembro, nuevo_comentario);
 
     chica.comentarios.push(comentario);
     document.getElementById("comentarios_" + id_miembro).innerHTML += 
-        '<li>' + 
+        '<li class="comentario_individual">' + 
             nuevo_comentario + 
-            '<i id="like_' + id_miembro + '" class="fa fa-heart" aria-hidden="true"></i>' +
+            '<i id="like_' + id_miembro + '_' + chica.comentarios.length + 
+                '" class="fa fa-heart" aria-hidden="true" onclick="darLike(\'like_' + id_miembro + '_' + chica.comentarios.length + '\')">0</i>' +
         '</li>'; 
+}
+
+function darLike(id_like){
+    var likes = parseInt(document.getElementById(id_like).innerHTML);
+    document.getElementById(id_like).innerHTML = likes+1;
 }
 
 function MiembroSquad(id,nombre,edad,hobbies){
@@ -56,9 +63,9 @@ function MiembroSquad(id,nombre,edad,hobbies){
     this.comentarios = [];
 }
 
-function Comentario(id_miembro,comentario,likes){
+function Comentario(id_miembro,comentario){
     this.id_miembro = id_miembro;
     this.comentario = comentario;
-    this.likes = likes;    
+    this.likes = 0;    
 }
 
