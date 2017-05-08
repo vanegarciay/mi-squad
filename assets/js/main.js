@@ -24,14 +24,41 @@ arrChicas.forEach(function(chica){
                     htmlListaHobbies +
                 '</ul>' +
             '</p>' +
+            '<textarea id="nuevo_comentario_' + chica.id + '"></textarea>' +
+            '<button onclick="dejarComentario(\'' + chica.id + '\')">Dejar comentario</button>' +
+            '<div id="comentarios_' + chica.id + '"></div>' +
         '</div>';
 
     document.getElementById("chicas").innerHTML += htmlChica; 
 });
+
+function dejarComentario(id_miembro){
+    chica = arrChicas.filter(function(chica){
+        return chica.id == id_miembro;
+    })[0];
+
+    var nuevo_comentario = document.getElementById("nuevo_comentario_" + id_miembro).value;
+    comentario = new Comentario(id_miembro, nuevo_comentario, "like");
+
+    chica.comentarios.push(comentario);
+    document.getElementById("comentarios_" + id_miembro).innerHTML += 
+        '<li>' + 
+            nuevo_comentario + 
+            '<i id="like_' + id_miembro + '" class="fa fa-heart" aria-hidden="true"></i>' +
+        '</li>'; 
+}
 
 function MiembroSquad(id,nombre,edad,hobbies){
     this.id = id;
     this.nombre = nombre;
     this.edad = edad;
     this.hobbies = hobbies;
+    this.comentarios = [];
 }
+
+function Comentario(id_miembro,comentario,likes){
+    this.id_miembro = id_miembro;
+    this.comentario = comentario;
+    this.likes = likes;    
+}
+
